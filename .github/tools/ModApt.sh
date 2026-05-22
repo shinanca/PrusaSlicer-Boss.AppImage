@@ -22,7 +22,7 @@ sudo apt install -y locales-all git build-essential autoconf cmake \
   libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-sync1 \
   libxcb-xfixes0 libxshmfence1 libgl1 libdrm2 libgbm1 libvulkan1 \
   zlib1g-dev libbz2-dev libboost-all-dev xvfb texinfo \
-  file binutils patchelf findutils grep sed coreutils strace
+  file binutils patchelf findutils grep sed coreutils strace libhidapi-dev
 
 sudo rm -rf $APT_CACHE_DIR/archives/partial/
 sudo rm -rf $APT_CACHE_DIR/archives/lock
