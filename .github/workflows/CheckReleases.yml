@@ -22,23 +22,23 @@ jobs:
         #set -x
         #set -v
         set -euo pipefail
-        
+
         GetReleases()
          {
           list=$(gh release list -R "$1" --json tagName | jq -r 'map(select(true))[] | (.tagName)' | sed 's/version_//g')
           tmpfile=$(mktemp)
           touch $tmpfile
           for i in $list; do
-            if [[ $i != *-* ]] && dpkg --compare-versions $i "ge" "2.9"; then 
+            if [[ $i != *-* ]] && dpkg --compare-versions $i "ge" "2.9.5"; then
               echo $i >>$tmpfile
             fi
           done
           sort <$tmpfile >$2
           rm -f $tmpfile
          }
-         
-        PRUSA_REPO=prusa3d/PrusaSlicer
-        
+
+        PRUSA_REPO=mjonuschat/PrusaSlicer
+
         cd "$GITHUB_WORKSPACE"
         GetReleases "$PRUSA_REPO" "./Prusa.Releases"
         GetReleases "$GITHUB_REPOSITORY" "./This.Releases"
@@ -51,7 +51,7 @@ jobs:
           echo "Build for version $VERSION is already running. Skipping dispatch."
           exit 0
         fi
-        
+
         if [[ -z "${VERSION}" ]]; then
           echo "No new release found. do not Dispatch Build."
          else

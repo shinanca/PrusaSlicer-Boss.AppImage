@@ -1,4 +1,4 @@
-name: Build PrusaSlicer AppImage
+name: Build PrusaSlicer BOSS AppImage
 on:
   workflow_dispatch:
 #  push:
@@ -42,22 +42,22 @@ jobs:
           tmpfile=$(mktemp)
           touch $tmpfile
           for i in $list; do
-            if [[ $i != *-* ]] && dpkg --compare-versions $i "ge" "2.9"; then 
+            if [[ $i != *-* ]] && dpkg --compare-versions $i "ge" "2.9.5"; then
               echo $i >>$tmpfile
             fi
           done
           sort <$tmpfile >$2
           rm -f $tmpfile
          }
-         
-        PRUSA_REPO=prusa3d/PrusaSlicer
-        
+
+        PRUSA_REPO=mjonuschat/PrusaSlicer
+
         cd "$GITHUB_WORKSPACE"
         GetReleases "$PRUSA_REPO" "./Prusa.Releases"
         GetReleases "$GITHUB_REPOSITORY" "./This.Releases"
         VERSION=$(head -1 <<< "$(comm -23 Prusa.Releases This.Releases)")
         rm -f "./Prusa.Releases" "./This.Releases"
-        
+
         if [[ -z "${VERSION}" ]]; then
           echo "No new release found. Skipping rest of workflow."
           echo "skip=true" >> $GITHUB_OUTPUT
@@ -91,7 +91,7 @@ jobs:
       if: steps.Check_Releases.outputs.skip == 'false'
       uses: actions/checkout@v5
       with:
-        repository: prusa3d/PrusaSlicer
+        repository: mjonuschat/PrusaSlicer
         ref: '${{ steps.Check_Releases.outputs.VERSION }}'
         path: '${{ env.PRUSA_REPO_DIR }}'
 
